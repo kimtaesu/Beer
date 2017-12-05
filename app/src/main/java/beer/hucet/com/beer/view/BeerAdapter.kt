@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import beer.hucet.com.beer.R
+import beer.hucet.com.beer.glide.GlideRequests
 import beer.hucet.com.beer.model.Beer
 
 /**
@@ -14,6 +15,11 @@ import beer.hucet.com.beer.model.Beer
  */
 class BeerAdapter : RecyclerView.Adapter<BeerAdapter.BeerViewHolder>() {
     private val items: ArrayList<Beer> = arrayListOf()
+
+    private var glideRequests: GlideRequests? = null
+    fun setGlideRequest(glideRequests: GlideRequests) {
+        this.glideRequests = glideRequests
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeerAdapter.BeerViewHolder {
         val v = LayoutInflater
@@ -26,6 +32,11 @@ class BeerAdapter : RecyclerView.Adapter<BeerAdapter.BeerViewHolder>() {
         val item = items[position]
         holder.name.text = item.name
         holder.desc.text = item.description
+        holder.abv.text = "${item.abv}"
+        glideRequests?.run {
+            load(item.image_url)
+                    .into(holder.thumbnail)
+        }
     }
 
     override fun getItemCount(): Int = items.size
@@ -39,6 +50,7 @@ class BeerAdapter : RecyclerView.Adapter<BeerAdapter.BeerViewHolder>() {
     inner class BeerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.name)
         val desc: TextView = view.findViewById(R.id.desc)
+        val abv: TextView = view.findViewById(R.id.abv)
         val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     }
 }

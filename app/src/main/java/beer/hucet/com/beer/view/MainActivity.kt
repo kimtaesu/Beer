@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import beer.hucet.com.beer.R
+import beer.hucet.com.beer.glide.GlideApp
 import beer.hucet.com.beer.presenter.BeerRequest
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
     }
 
     private fun initRecycler() {
+        adapter.setGlideRequest(GlideApp.with(this))
         recycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@MainActivity.adapter
