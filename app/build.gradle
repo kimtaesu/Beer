@@ -1,0 +1,123 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: "config.gradle"
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "beer.hucet.com.beer"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "SERVER_URL", '"https://api.github.com/"'
+        }
+        release {
+            buildConfigField "String", "SERVER_URL", '"https://api.github.com/"'
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+    packagingOptions {
+        exclude 'META-INF/app_debug.kotlin_module'
+        exclude 'META-INF/rxjava.properties'
+    }
+}
+
+// junit5 doesn't support android projects out of the box
+apply plugin: "de.mannodermaus.android-junit5"
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation kotlinDeps.kotlin
+    testImplementation kotlinDeps.kotlinReflect
+
+    implementation androidSupportDeps.androidSupportV7
+    implementation androidSupportDeps.constraintLayout
+    implementation androidSupportDeps.supportRecyclerView
+    implementation androidSupportDeps.supportDesign
+    implementation androidSupportDeps.archRuntime
+    implementation rxDeps.rxKotlin
+    implementation rxDeps.rxAndroid
+    implementation opensourceDeps.timber
+    implementation opensourceDeps.gson
+
+    kapt opensourceDeps.permissionsDispatcherProcessor
+    implementation(opensourceDeps.permissionDispatcher) {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+
+    implementation daggerDeps.dagger
+    implementation daggerDeps.daggerSupport
+    kapt daggerDeps.daggerCompiler
+    kapt daggerDeps.daggerProcessor
+    compileOnly daggerDeps.javaxAnnotation
+
+    kapt opensourceDeps.glideCompiler
+    implementation opensourceDeps.glide
+
+    implementation firebaseDeps.crash
+
+    testImplementation testDeps.junit
+    testImplementation testDeps.mock
+    testImplementation testDeps.mockInline
+    testImplementation testDeps.robolectric
+
+
+    testImplementation(testDeps.spekApi) {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation(testDeps.spekJunitEngine) {
+        exclude group: "org.junit.platform"
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation testDeps.spekSubject
+
+    testImplementation testDeps.junitPlatformEngine
+    testImplementation testDeps.kluent
+    testImplementation testDeps.kluentAndroid
+    debugImplementation debugDeps.stetho
+
+    implementation httpDeps.okHttp
+    implementation httpDeps.okHttpLogger
+    implementation httpDeps.converter_moshi
+    implementation httpDeps.retrofit
+    implementation httpDeps.retrofitRxjavaAdapter
+}
+afterEvaluate {
+    compileDebugUnitTestKotlin {
+        finalizedBy copyKotlinDebugUnitTestClasses
+        finalizedBy copyKotlinDebugClasses
+    }
+}
+
+task copyKotlinDebugUnitTestClasses(type: Copy) {
+    from "build/tmp/kotlin-classes/debugUnitTest"
+    into "build/intermediates/classes/test/debug"
+}
+
+task copyKotlinDebugClasses(type: Copy) {
+    from "build/tmp/kotlin-classes/debug"
+    into "build/intermediates/classes/debug"
+}
