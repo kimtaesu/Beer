@@ -39,7 +39,8 @@ sealed class ViewDelegateAdapter<T : RecyclerView.ViewHolder, R : Basic> {
             holder.desc.text = item.description
             holder.abv.text = "${item.abv}"
             glideRequests?.run {
-                load(item.image_url)
+                asThumbnail()
+                        .load(item.image_url)
                         .into(holder.thumbnail)
             }
         }
