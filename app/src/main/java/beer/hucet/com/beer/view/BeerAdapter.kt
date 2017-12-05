@@ -30,6 +30,12 @@ class BeerAdapter : RecyclerView.Adapter<BeerAdapter.BeerViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
+    fun update(items: List<Beer>) {
+        this.items.clear()
+        this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
     inner class BeerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.name)
         val desc: TextView = view.findViewById(R.id.desc)

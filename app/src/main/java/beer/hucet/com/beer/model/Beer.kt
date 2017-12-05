@@ -11,7 +11,7 @@ data class Beer(
         val image_url: String,
         val abv: Float,
         val ibu: Float,
-        val ebc: Int,
-        val srm: Int,
-        val ph: Int
+        val ebc: Float,
+        val srm: Float,
+        val ph: Float
 )

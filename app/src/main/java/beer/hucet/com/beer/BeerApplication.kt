@@ -16,7 +16,7 @@ import javax.inject.Inject
  * Created by taesu on 2017-12-05.
  */
 
-class BeerApplication : Application(), HasActivityInjector {
+open class BeerApplication : Application(), HasActivityInjector {
 
     @Inject lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
     override fun activityInjector(): AndroidInjector<Activity> {
