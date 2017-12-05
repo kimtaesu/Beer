@@ -30,7 +30,6 @@ sealed class ViewDelegateAdapter<T : RecyclerView.ViewHolder, R : Basic> {
                     .inflate(R.layout.list_item_progress, parent, false)
             return ProgressViewHolder(v)
         }
-
     }
 
     class BeerDelegate : ViewDelegateAdapter<BeerViewHolder, Beer>() {

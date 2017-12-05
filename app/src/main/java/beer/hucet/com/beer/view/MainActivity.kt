@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import beer.hucet.com.beer.R
 import beer.hucet.com.beer.glide.GlideApp
-import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.presenter.BeerRequest
 import beer.hucet.com.beer.view.adapter.BeerAdapter
 import beer.hucet.com.beer.view.adapter.BeerViewHolder
@@ -38,7 +37,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
 
     private fun initRecycler() {
         adapter.setGlideRequest(GlideApp.with(this))
+
         val linearLayoutManager = LinearLayoutManager(this)
+        adapter.setOnClickListener(linearLayoutManager, { beer ->
+
+        })
         recycler.apply {
             layoutManager = linearLayoutManager
             adapter = this@MainActivity.adapter
@@ -63,15 +66,15 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
     }
 
     override fun showProgress() {
-        Toast.makeText(this, "showProgress", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "showProgress", Toast.LENGTH_SHORT).show()
     }
 
     override fun hideProgress() {
-        Toast.makeText(this, "hideProgress", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "hideProgress", Toast.LENGTH_SHORT).show()
     }
 
     override fun showError() {
-        Toast.makeText(this, "showError", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "showError", Toast.LENGTH_SHORT).show()
     }
 
 

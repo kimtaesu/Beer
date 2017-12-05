@@ -1,8 +1,9 @@
 package beer.hucet.com.beer.view.adapter
 
-import android.support.v7.util.DiffUtil
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import beer.hucet.com.beer.OnBeerClickListener
 import beer.hucet.com.beer.glide.GlideRequests
 import beer.hucet.com.beer.model.Basic
 import beer.hucet.com.beer.model.Beer
@@ -20,12 +21,31 @@ class BeerAdapter(
     private val items: ArrayList<Basic> = arrayListOf()
 
     private var glideRequests: GlideRequests? = null
+
+    private var onBeerClick: OnBeerClickListener? = null
+    private var layoutManager: LinearLayoutManager? = null
     fun setGlideRequest(glideRequests: GlideRequests) {
         this.glideRequests = glideRequests
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? =
-            delegates[ViewType.getType(viewType)]?.onCreateViewHolder(parent)
+    fun setOnClickListener(layoutManager: LinearLayoutManager, onClick: OnBeerClickListener) {
+        this.onBeerClick = onClick
+        this.layoutManager = layoutManager
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+        val v = delegates[ViewType.getType(viewType)]?.onCreateViewHolder(parent)
+
+        if (v is BeerViewHolder) {
+            v?.itemView?.setOnClickListener {
+                val position = this.layoutManager?.getPosition(it)!!
+                val item = items[position]
+                onBeerClick?.invoke(item as Beer)
+            }
+        }
+        return v
+    }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
@@ -62,4 +82,6 @@ class BeerAdapter(
         this.items.add(Progress())
         notifyItemInserted(getLastIndex())
     }
+
+
 }
