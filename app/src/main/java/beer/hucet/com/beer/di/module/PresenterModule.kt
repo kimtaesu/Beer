@@ -4,10 +4,12 @@ import beer.hucet.com.beer.di.scopes.PerActivity
 import beer.hucet.com.beer.presenter.BeerPresenter
 import beer.hucet.com.beer.presenter.BeerRequest
 import beer.hucet.com.beer.repository.BeerRepository
-import beer.hucet.com.beer.view.BeerAdapter
+import beer.hucet.com.beer.view.adapter.BeerAdapter
 import beer.hucet.com.beer.view.MainActivity
+import beer.hucet.com.beer.view.paging.LoadingChecker
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.ElementsIntoSet
 
 /**
  * Created by taesu on 2017-11-10.
@@ -16,11 +18,13 @@ import dagger.Provides
 class PresenterModule {
     @Provides
     @PerActivity
-    fun provideBeerPresenter(view: BeerRequest.View, repository: BeerRepository, adapter: BeerAdapter): BeerRequest.Presenter =
+    fun provideBeerPresenter(view: Set<@JvmSuppressWildcards BeerRequest.View>, repository: BeerRepository, adapter: BeerAdapter): BeerRequest.Presenter =
             BeerPresenter(view, repository, adapter)
 
     @Provides
     @PerActivity
-    fun provideBeerView(mainActivity: MainActivity): BeerRequest.View = mainActivity
+    @ElementsIntoSet
+    fun provideBeerView(mainActivity: MainActivity, loadingChecker: LoadingChecker): Set<BeerRequest.View> =
+            setOf(mainActivity, loadingChecker)
 
 }

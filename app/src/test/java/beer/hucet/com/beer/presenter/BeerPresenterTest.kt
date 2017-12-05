@@ -2,7 +2,7 @@ package beer.hucet.com.beer.presenter
 
 import beer.hucet.com.beer.repository.BeerRepository
 import beer.hucet.com.beer.scheduler.TestSchedulerProvider
-import beer.hucet.com.beer.view.BeerAdapter
+import beer.hucet.com.beer.view.adapter.BeerAdapter
 import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
@@ -33,7 +33,7 @@ class BeerPresenterTest : SubjectSpek<BeerPresenter>({
 
         }
         subject {
-            BeerPresenter(view, repository, adapter, TestSchedulerProvider(testScheduler))
+            BeerPresenter(setOf(view), repository, adapter, TestSchedulerProvider(testScheduler))
         }
         on("getBeer 성공 ")
         {
