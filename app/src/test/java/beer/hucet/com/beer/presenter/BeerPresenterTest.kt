@@ -3,6 +3,7 @@ package beer.hucet.com.beer.presenter
 import beer.hucet.com.beer.repository.BeerRepository
 import beer.hucet.com.beer.scheduler.TestSchedulerProvider
 import beer.hucet.com.beer.view.BeerAdapter
+import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -29,6 +30,7 @@ class BeerPresenterTest : SubjectSpek<BeerPresenter>({
     {
         beforeEachTest {
             whenever(repository.getPagingBeer(any(), any())).thenReturn(Flowable.just(listOf()))
+
         }
         subject {
             BeerPresenter(view, repository, adapter, TestSchedulerProvider(testScheduler))
@@ -37,7 +39,8 @@ class BeerPresenterTest : SubjectSpek<BeerPresenter>({
         {
             subject.getBeer(1, 1)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
-            it("Success 경우 각 한번 씩 호출")
+
+            it("Success 경우 호출")
             {
                 verify(view, times(1)).showProgress()
                 verify(view, times(1)).hideProgress()
@@ -47,5 +50,24 @@ class BeerPresenterTest : SubjectSpek<BeerPresenter>({
 
             }
         }
+        on("getBeer 실패")
+        {
+            whenever(repository.getPagingBeer(any(), any())).thenReturn(Flowable.just(1).map { throw RuntimeException() })
+
+            subject.getBeer(1, 1)
+            testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
+
+            it("실패 할 경우 호출")
+            {
+                verify(view, times(1)).showProgress()
+                verify(view, times(1)).hideProgress()
+                verify(view, times(1)).showError()
+
+                verify(adapter, never()).update(any())
+                verify(repository, times(1)).getPagingBeer(any(), any())
+
+            }
+        }
+
     }
 })
