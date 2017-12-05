@@ -9,6 +9,6 @@ import retrofit2.http.Path
  * Created by taesu on 2017-12-05.
  */
 interface PunkApi {
-    @GET("users/{page}/{per_page}")
-    fun getPagingBeer(@Path("page") page: Int, @Path("perPage") perPage: Int): Flowable<List<Beer>>
+    @GET("beer/{page}/{per_page}")
+    fun getPagingBeer(@Path("page") page: Int, @Path("per_page") perPage: Int): Flowable<List<Beer>>
 }
