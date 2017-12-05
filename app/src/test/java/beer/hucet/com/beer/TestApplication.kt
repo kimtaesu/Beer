@@ -7,4 +7,8 @@ class TestApplication : BeerApplication() {
     override fun onCreate() {
         super.onCreate()
     }
+
+    override fun initStetho() {
+
+    }
 }

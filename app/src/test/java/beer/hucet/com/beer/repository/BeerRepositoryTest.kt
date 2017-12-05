@@ -8,6 +8,7 @@ import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.jetbrains.spek.subject.SubjectSpek
+import org.junit.runner.RunWith
 
 /**
  * Created by taesu on 2017-12-05.

@@ -1,5 +1,6 @@
 package beer.hucet.com.beer.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import beer.hucet.com.beer.R
 import beer.hucet.com.beer.glide.GlideApp
+import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.presenter.BeerRequest
 import beer.hucet.com.beer.view.adapter.BeerAdapter
 import beer.hucet.com.beer.view.adapter.BeerViewHolder
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initRecycler()
-        requestFetch(curPage, 10)
+        requestFetch(curPage, 30)
     }
 
 
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
 
         val linearLayoutManager = LinearLayoutManager(this)
         adapter.setOnClickListener(linearLayoutManager, { beer ->
-
+            startDetailActivity(beer)
         })
         recycler.apply {
             layoutManager = linearLayoutManager
@@ -55,9 +57,15 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
         }
         recycler.addOnScrollListener(LinearEndScrollListener(linearLayoutManager, {
             if (pagingAvailability.availablePaging()) {
-                requestFetch(++curPage, 10)
+                requestFetch(++curPage, 30)
             }
         }))
+    }
+
+    private fun startDetailActivity(beer: Beer) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.KEY_BEER, beer)
+        startActivity(intent)
     }
 
     private fun requestFetch(page: Int, perPage: Int) {

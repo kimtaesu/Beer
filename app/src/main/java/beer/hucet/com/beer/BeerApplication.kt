@@ -2,9 +2,12 @@ package beer.hucet.com.beer
 
 import android.app.Activity
 import android.app.Application
+import android.arch.persistence.room.Room
 import android.content.Context
 import android.os.StrictMode
 import beer.hucet.com.beer.di.AppInjector
+import beer.hucet.com.beer.model.Beer
+import beer.hucet.com.beer.persistence.BeerDatabase
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -59,7 +62,7 @@ open class BeerApplication : Application(), HasActivityInjector {
         }
     }
 
-    private fun initStetho() {
+    open fun initStetho() {
         if (BuildConfig.DEBUG) {
             try {
                 val stethoClazz = Class.forName("com.facebook.stetho.Stetho")

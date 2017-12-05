@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Beer</string>
+    <string name="title_abv">ABV : %1$.1f</string>
+    <string name="title_ibu">IBU : %1$.1f</string>
+    <string name="title_ebc">EBC : %1$.1f</string>
+    <string name="title_srm">SRM : %1$.1f</string>
+    <string name="title_ph">PH : %1$.1f</string>
+
 </resources>

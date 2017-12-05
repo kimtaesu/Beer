@@ -29,6 +29,7 @@ android {
         exclude 'META-INF/app_debug.kotlin_module'
         exclude 'META-INF/rxjava.properties'
     }
+
 }
 
 // junit5 doesn't support android projects out of the box
@@ -37,6 +38,7 @@ junitPlatform {
     filters {
         engines {
             include 'spek'
+            include 'junit-vintage'
         }
     }
 }
@@ -52,6 +54,12 @@ dependencies {
     implementation androidSupportDeps.supportRecyclerView
     implementation androidSupportDeps.supportDesign
     implementation androidSupportDeps.archRuntime
+    implementation androidSupportDeps.archRoomRxjava2
+    kapt androidSupportDeps.archRoomCompiler
+    implementation androidSupportDeps.archPaging
+    testImplementation androidSupportDeps.archRoomtesting
+    testImplementation androidSupportDeps.archCoreTest
+
     implementation rxDeps.rxKotlin
     implementation rxDeps.rxAndroid
     implementation opensourceDeps.timber
@@ -72,7 +80,6 @@ dependencies {
     kapt opensourceDeps.glideCompiler
     implementation opensourceDeps.glide
 
-    testImplementation testDeps.junit
     testImplementation testDeps.mock
     testImplementation testDeps.mockInline
     testImplementation testDeps.robolectric
@@ -102,6 +109,7 @@ dependencies {
     implementation httpDeps.converter_moshi
     implementation httpDeps.retrofit
     implementation httpDeps.retrofitRxjavaAdapter
+
 }
 afterEvaluate {
     compileDebugUnitTestKotlin {

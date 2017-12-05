@@ -24,7 +24,9 @@ ext {
     okHttpVersion = '3.8.1'
     androidAnnotationsVersion = '21.0.3'
     retrofitVersion = '2.3.0'
+    archVersion = '1.0.0'
     roomVersion = '1.0.0-alpha9-1'
+    lifeRuntimeVersion = '1.0.3'
     supportLibraryVersion = '26.1.0'
     timberVersion = '4.5.1'
     glideVersion = '4.3.0'
@@ -67,9 +69,15 @@ ext {
             constraintLayout   : "com.android.support.constraint:constraint-layout:1.0.2",
             supportRecyclerView: "com.android.support:recyclerview-v7:${supportLibraryVersion}",
             supportDesign      : "com.android.support:design:${supportLibraryVersion}",
-            archRuntime        : "android.arch.lifecycle:runtime:${roomVersion}",
-            archExtensions     : "android.arch.lifecycle:extensions:${roomVersion}",
-            archCompiler       : "android.arch.lifecycle:compiler:${roomVersion}",
+            archRuntime        : "android.arch.lifecycle:runtime:${lifeRuntimeVersion}",
+            archExtensions     : "android.arch.lifecycle:extensions:${archVersion}",
+            archCompiler       : "android.arch.lifecycle:compiler:${archVersion}",
+            archCoreTest       : "android.arch.core:core-testing:${archVersion}",
+
+            archRoomRxjava2    : "android.arch.persistence.room:rxjava2:${archVersion}",
+            archRoomCompiler   : "android.arch.persistence.room:compiler:${archVersion}",
+            archRoomtesting    : "android.arch.persistence.room:testing:${archVersion}",
+            archPaging         : "android.arch.paging:runtime:1.0.0-alpha3"
     ]
 
     httpDeps = [
