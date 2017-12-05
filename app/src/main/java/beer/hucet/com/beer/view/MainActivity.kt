@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerRequest.View {
 
-//    @Inject lateinit var presenter: BeerRequest.Presenter
-//    @Inject lateinit var adapter: BeerAdapter
+    @Inject lateinit var presenter: BeerRequest.Presenter
+    @Inject lateinit var adapter: BeerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +28,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
     private fun initRecycler() {
         recycler.apply {
             layoutManager = LinearLayoutManager(context)
-//            adapter = this@MainActivity.adapter
+            adapter = this@MainActivity.adapter
         }
     }
 
     private fun requestFetch() {
-//        presenter.getBeer(1, 10)
+        presenter.getBeer(1, 10)
     }
 
     override fun showProgress() {
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
     override fun showError() {
         Toast.makeText(this, "showError", Toast.LENGTH_SHORT).show()
     }
+
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>

@@ -9,14 +9,14 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
-import vingle.hucet.com.vingle.debug.OptionalTree
 import java.lang.reflect.InvocationTargetException
 import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-12-05.
  */
- class BeerApplication : Application(), HasActivityInjector {
+
+class BeerApplication : Application(), HasActivityInjector {
 
     @Inject lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
     override fun activityInjector(): AndroidInjector<Activity> {

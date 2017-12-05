@@ -1,4 +1,4 @@
-package vingle.hucet.com.vingle.di.module
+package beer.hucet.com.beer.di.module
 
 import beer.hucet.com.beer.BuildConfig
 import beer.hucet.com.beer.api.PunkApi

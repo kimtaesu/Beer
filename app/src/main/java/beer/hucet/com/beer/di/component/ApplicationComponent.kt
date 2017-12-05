@@ -1,21 +1,22 @@
-package vingle.hucet.com.vingle.di.component
+package beer.hucet.com.beer.di.component
 
 import android.app.Application
+import beer.hucet.com.beer.di.module.ApplicationModule
+import beer.hucet.com.beer.di.module.MainAcitivtyModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
-import org.buffer.android.boilerplate.ui.injection.module.ApplicationModule
-import vingle.hucet.com.vingle.di.module.MainAcitivtyModule
 import javax.inject.Singleton
 
 /**
  * Created by taesu on 2017-10-30.
  */
 @Singleton
-@Component(modules = arrayOf(
-        ApplicationModule::class,
-        MainAcitivtyModule::class,
-        AndroidSupportInjectionModule::class))
+@Component(
+        modules = arrayOf(
+                ApplicationModule::class,
+                MainAcitivtyModule::class,
+                AndroidSupportInjectionModule::class))
 interface ApplicationComponent {
 
     @Component.Builder

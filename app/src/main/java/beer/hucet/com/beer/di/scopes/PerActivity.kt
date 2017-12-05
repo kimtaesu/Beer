@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.inject.scopes
+package beer.hucet.com.beer.di.scopes
 
 import javax.inject.Scope
 

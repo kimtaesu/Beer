@@ -1,11 +1,9 @@
-package org.buffer.android.boilerplate.ui.injection.module
+package beer.hucet.com.beer.di.module
 
 import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import vingle.hucet.com.vingle.di.module.NetworkModule
-import vingle.hucet.com.vingle.di.module.RepositoryModule
 import javax.inject.Singleton
 
 /**

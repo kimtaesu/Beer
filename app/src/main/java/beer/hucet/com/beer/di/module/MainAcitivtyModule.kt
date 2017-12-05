@@ -1,7 +1,7 @@
-package vingle.hucet.com.vingle.di.module
+package beer.hucet.com.beer.di.module
 
+import beer.hucet.com.beer.di.scopes.PerActivity
 import beer.hucet.com.beer.view.MainActivity
-import com.hucet.clean.gallery.inject.scopes.PerActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -1,4 +1,4 @@
-package vingle.hucet.com.vingle.debug
+package beer.hucet.com.beer
 
 import timber.log.Timber
 
