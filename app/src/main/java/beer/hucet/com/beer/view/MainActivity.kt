@@ -7,8 +7,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import beer.hucet.com.beer.R
 import beer.hucet.com.beer.glide.GlideApp
+import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.presenter.BeerRequest
 import beer.hucet.com.beer.view.adapter.BeerAdapter
+import beer.hucet.com.beer.view.adapter.BeerViewHolder
 import beer.hucet.com.beer.view.paging.LinearEndScrollListener
 import beer.hucet.com.beer.view.paging.PagingAvailability
 import dagger.android.AndroidInjector
@@ -41,7 +43,13 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
             layoutManager = linearLayoutManager
             adapter = this@MainActivity.adapter
         }
+        recycler.setRecyclerListener {
+            if (it is BeerViewHolder) {
+                it.thumbnail.clearAnimation()
+                GlideApp.with(this).clear(it.thumbnail)
+            }
 
+        }
         recycler.addOnScrollListener(LinearEndScrollListener(linearLayoutManager, {
             if (pagingAvailability.availablePaging()) {
                 requestFetch(++curPage, 10)
