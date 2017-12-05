@@ -16,12 +16,7 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField "String", "SERVER_URL", '"https://api.github.com/"'
-        }
         release {
-            buildConfigField "String", "SERVER_URL", '"https://api.github.com/"'
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -77,8 +72,6 @@ dependencies {
     kapt opensourceDeps.glideCompiler
     implementation opensourceDeps.glide
 
-    implementation firebaseDeps.crash
-
     testImplementation testDeps.junit
     testImplementation testDeps.mock
     testImplementation testDeps.mockInline
@@ -97,6 +90,11 @@ dependencies {
     testImplementation testDeps.junitPlatformEngine
     testImplementation testDeps.kluent
     testImplementation testDeps.kluentAndroid
+
+    testImplementation junit5.unitTests()
+    testImplementation junit5.parameterized()
+    testCompileOnly junit5.unitTestsRuntime()
+
     debugImplementation debugDeps.stetho
 
     implementation httpDeps.okHttp

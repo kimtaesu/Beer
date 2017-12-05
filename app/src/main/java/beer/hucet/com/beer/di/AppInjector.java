@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import beer.hucet.com.beer.BeerApplication;
 import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -34,7 +35,7 @@ public class AppInjector {
     private AppInjector() {
     }
 
-    public static void init(Application application) {
+    public static void init(BeerApplication application) {
         DaggerApplicationComponent
                 .builder()
                 .application(application)

@@ -44,7 +44,7 @@ class NetworkModule {
     fun provideRestAdapter(okHttpClient: OkHttpClient): Retrofit {
         val builder = Retrofit.Builder()
         builder.client(okHttpClient)
-                .baseUrl(BuildConfig.SERVER_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
         return builder.build()

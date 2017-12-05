@@ -13,7 +13,7 @@ import javax.inject.Singleton
 class RepositoryModule {
     @Provides
     @Singleton
-    fun provideGithubRepository(punkApi: PunkApi): BeerRepository {
+    fun provideBeerRepository(punkApi: PunkApi): BeerRepository {
         return BeerRepository(punkApi)
     }
 }

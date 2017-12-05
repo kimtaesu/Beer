@@ -16,7 +16,13 @@ import javax.inject.Inject
 /**
  * Created by taesu on 2017-12-05.
  */
-class BeerApplication : Application(), HasActivityInjector {
+ class BeerApplication : Application(), HasActivityInjector {
+
+    @Inject lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    override fun activityInjector(): AndroidInjector<Activity> {
+        return activityDispatchingAndroidInjector
+    }
+
     override fun onCreate() {
         super.onCreate()
         initDagger()
@@ -71,8 +77,4 @@ class BeerApplication : Application(), HasActivityInjector {
         }
     }
 
-    @Inject lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return activityDispatchingAndroidInjector
-    }
 }
