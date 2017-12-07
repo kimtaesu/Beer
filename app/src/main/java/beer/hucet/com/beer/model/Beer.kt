@@ -2,7 +2,9 @@ package beer.hucet.com.beer.model
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import beer.hucet.com.beer.view.adapter.ItemType
 import java.io.Serializable
 
 /**
@@ -23,6 +25,6 @@ data class Beer(
         val srm: Float?,
         val ph: Float?
 ) : Basic(), Serializable {
-    override val viewType: ViewType
-        get() = ViewType.Beer
+    @Ignore
+    override fun getViewtype(): Int = ItemType.Beer.type
 }

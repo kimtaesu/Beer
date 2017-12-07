@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: "config.gradle"
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -14,7 +15,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
-
+    dexOptions {
+        preDexLibraries = false
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -111,19 +114,19 @@ dependencies {
     implementation httpDeps.retrofitRxjavaAdapter
 
 }
-afterEvaluate {
-    compileDebugUnitTestKotlin {
-        finalizedBy copyKotlinDebugUnitTestClasses
-        finalizedBy copyKotlinDebugClasses
-    }
-}
-
-task copyKotlinDebugUnitTestClasses(type: Copy) {
-    from "build/tmp/kotlin-classes/debugUnitTest"
-    into "build/intermediates/classes/test/debug"
-}
-
-task copyKotlinDebugClasses(type: Copy) {
-    from "build/tmp/kotlin-classes/debug"
-    into "build/intermediates/classes/debug"
-}
+//afterEvaluate {
+//    compileDebugUnitTestKotlin {
+//        finalizedBy copyKotlinDebugUnitTestClasses
+//        finalizedBy copyKotlinDebugClasses
+//    }
+//}
+//
+//task copyKotlinDebugUnitTestClasses(type: Copy) {
+//    from "build/tmp/kotlin-classes/debugUnitTest"
+//    into "build/intermediates/classes/test/debug"
+//}
+//
+//task copyKotlinDebugClasses(type: Copy) {
+//    from "build/tmp/kotlin-classes/debug"
+//    into "build/intermediates/classes/debug"
+//}

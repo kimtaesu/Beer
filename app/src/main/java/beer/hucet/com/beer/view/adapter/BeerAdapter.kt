@@ -8,13 +8,12 @@ import beer.hucet.com.beer.glide.GlideRequests
 import beer.hucet.com.beer.model.Basic
 import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.model.Progress
-import beer.hucet.com.beer.model.ViewType
 
 /**
  * Created by taesu on 2017-12-05.
  */
 class BeerAdapter(
-        private val delegates: Map<ViewType, ViewDelegateAdapter<RecyclerView.ViewHolder, Basic>>) :
+        private val delegates: Map<Int, ViewDelegateAdapter<RecyclerView.ViewHolder, Basic>>) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -34,7 +33,7 @@ class BeerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
-        val v = delegates[ViewType.getType(viewType)]?.onCreateViewHolder(parent)
+        val v = delegates[viewType]?.onCreateViewHolder(parent)
 
         if (v is BeerViewHolder) {
             v?.itemView?.setOnClickListener {
@@ -49,14 +48,14 @@ class BeerAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
-        delegates[item.viewType]?.onBindViewHolder(holder, position, item, glideRequests)
+        delegates[item.getViewtype()]?.onBindViewHolder(holder, position, item, glideRequests)
     }
 
     override fun getItemCount(): Int = items.size
 
     private fun getLastIndex(): Int = items.lastIndex
 
-    override fun getItemViewType(position: Int): Int = items[position].viewType.type
+    override fun getItemViewType(position: Int): Int = items[position].getViewtype()
 
     fun update(items: List<Beer>) {
         removeEndProgress()
@@ -72,7 +71,7 @@ class BeerAdapter(
 
         val lastIndex = getLastIndex()
         val item = this.items[lastIndex]
-        if (item is Progress) {
+        if (ItemType.isProgressType(item.getViewtype())) {
             this.items.removeAt(lastIndex)
             notifyItemRemoved(lastIndex)
         }

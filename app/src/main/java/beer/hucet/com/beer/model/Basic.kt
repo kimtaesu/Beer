@@ -1,29 +1,10 @@
 package beer.hucet.com.beer.model
 
+import beer.hucet.com.beer.view.adapter.ViewType
+
 /**
- * Created by taesu on 2017-12-05.
+ * Created by taesu on 2017-12-07.
  */
-
-enum class ViewType(val type: Int) {
-    Beer(0), Progress(1);
-
-    companion object {
-        fun getType(type: Int): ViewType =
-                when (type) {
-                    Beer.type -> {
-                        Beer
-                    }
-                    Progress.type -> {
-                        Progress
-                    }
-                    else -> {
-                        throw IllegalArgumentException("$type is unknown")
-                    }
-                }
-    }
-}
-
-abstract class Basic() {
+abstract class Basic() : ViewType {
     abstract val id: Long
-    abstract val viewType: ViewType
 }

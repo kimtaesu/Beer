@@ -5,7 +5,6 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import beer.hucet.com.beer.model.Beer
-import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -20,5 +19,5 @@ interface BeerDao {
     fun deleteAllBeers()
 
     @Query("SELECT * FROM beers WHERE beer_id = :id")
-    fun getBeerById(id: Long): Flowable<Beer>
+    fun getBeerById(id: Long): Single<Beer>
 }
