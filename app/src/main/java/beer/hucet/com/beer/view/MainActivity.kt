@@ -13,6 +13,7 @@ import beer.hucet.com.beer.view.adapter.BeerAdapter
 import beer.hucet.com.beer.view.adapter.BeerViewHolder
 import beer.hucet.com.beer.view.paging.LinearEndScrollListener
 import beer.hucet.com.beer.view.paging.PagingAvailability
+import beer.hucet.com.beer.viewmodel.BeerViewModel
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -26,14 +27,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
     @Inject lateinit var presenter: BeerRequest.Presenter
     @Inject lateinit var adapter: BeerAdapter
     @Inject lateinit var pagingAvailability: PagingAvailability
-
-    private var curPage = 1
+    @Inject lateinit var beerViewModel: BeerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initRecycler()
-        requestFetch(curPage, 30)
     }
 
 
@@ -57,9 +56,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
         }
         recycler.addOnScrollListener(LinearEndScrollListener(linearLayoutManager, {
             if (pagingAvailability.availablePaging()) {
-                requestFetch(++curPage, 30)
+                requestNextPage()
             }
         }))
+        requestNextPage()
+    }
+
+    private fun requestNextPage() {
+        beerViewModel.requestFetch()
     }
 
     private fun startDetailActivity(beer: Beer) {

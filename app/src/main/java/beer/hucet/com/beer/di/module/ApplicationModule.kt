@@ -11,7 +11,8 @@ import javax.inject.Singleton
  */
 @Module(includes = arrayOf(
         RepositoryModule::class,
-        NetworkModule::class
+        NetworkModule::class,
+        ViewModelModule::class
 ))
 open class ApplicationModule {
     @Provides

@@ -1,7 +1,6 @@
 package beer.hucet.com.beer.view.paging
 
-import beer.hucet.com.beer.presenter.BeerRequest
-import io.reactivex.Observable
+import beer.hucet.com.beer.viewmodel.LoadingState
 
 /**
  * Created by taesu on 2017-12-05.

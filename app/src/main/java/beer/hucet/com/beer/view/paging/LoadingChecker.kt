@@ -2,6 +2,7 @@ package beer.hucet.com.beer.view.paging
 
 import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.presenter.BeerRequest
+import beer.hucet.com.beer.viewmodel.LoadingState
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.MainThreadDisposable
