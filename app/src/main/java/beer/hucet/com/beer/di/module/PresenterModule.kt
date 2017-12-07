@@ -4,7 +4,6 @@ import beer.hucet.com.beer.di.scopes.PerActivity
 import beer.hucet.com.beer.presenter.BeerPresenter
 import beer.hucet.com.beer.presenter.BeerRequest
 import beer.hucet.com.beer.repository.BeerRepository
-import beer.hucet.com.beer.view.adapter.BeerAdapter
 import beer.hucet.com.beer.view.MainActivity
 import beer.hucet.com.beer.view.paging.LoadingChecker
 import dagger.Module
@@ -18,8 +17,8 @@ import dagger.multibindings.ElementsIntoSet
 class PresenterModule {
     @Provides
     @PerActivity
-    fun provideBeerPresenter(view: Set<@JvmSuppressWildcards BeerRequest.View>, repository: BeerRepository, adapter: BeerAdapter): BeerRequest.Presenter =
-            BeerPresenter(view, repository, adapter)
+    fun provideBeerPresenter(view: Set<@JvmSuppressWildcards BeerRequest.View>, repository: BeerRepository): BeerRequest.Presenter =
+            BeerPresenter(view, repository)
 
     @Provides
     @PerActivity

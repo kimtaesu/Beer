@@ -2,7 +2,6 @@ package beer.hucet.com.beer.presenter
 
 import beer.hucet.com.beer.repository.BeerRepository
 import beer.hucet.com.beer.scheduler.TestSchedulerProvider
-import beer.hucet.com.beer.view.adapter.BeerAdapter
 import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
@@ -24,7 +23,6 @@ class BeerPresenterTest : SubjectSpek<BeerPresenter>({
 
     val view by memoized { mock<BeerRequest.View>() }
     val repository by memoized { mock<BeerRepository>() }
-    val adapter by memoized { mock<BeerAdapter>() }
     val testScheduler by memoized { TestScheduler() }
     given("BeerPresenter")
     {
@@ -33,11 +31,11 @@ class BeerPresenterTest : SubjectSpek<BeerPresenter>({
 
         }
         subject {
-            BeerPresenter(setOf(view), repository, adapter, TestSchedulerProvider(testScheduler))
+            BeerPresenter(setOf(view), repository, TestSchedulerProvider(testScheduler))
         }
-        on("getBeer 성공 ")
+        on("requestFetch 성공 ")
         {
-            subject.getBeer(1, 1)
+            subject.requestFetch(1, 1)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
             it("Success 경우 호출")
@@ -45,16 +43,16 @@ class BeerPresenterTest : SubjectSpek<BeerPresenter>({
                 verify(view, times(1)).showProgress()
                 verify(view, times(1)).hideProgress()
 
-                verify(adapter, times(1)).update(any())
+                verify(view, times(1)).update(any())
                 verify(repository, times(1)).getPagingBeer(any(), any())
 
             }
         }
-        on("getBeer 실패")
+        on("requestFetch 실패")
         {
             whenever(repository.getPagingBeer(any(), any())).thenReturn(Flowable.just(1).map { throw RuntimeException() })
 
-            subject.getBeer(1, 1)
+            subject.requestFetch(1, 1)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
             it("실패 할 경우 호출")
@@ -63,11 +61,10 @@ class BeerPresenterTest : SubjectSpek<BeerPresenter>({
                 verify(view, times(1)).hideProgress()
                 verify(view, times(1)).showError()
 
-                verify(adapter, never()).update(any())
+                verify(view, never()).update(any())
                 verify(repository, times(1)).getPagingBeer(any(), any())
 
             }
         }
-
     }
 })

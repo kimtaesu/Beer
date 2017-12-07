@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
 import beer.hucet.com.beer.R
 import beer.hucet.com.beer.glide.GlideApp
 import beer.hucet.com.beer.model.Beer
@@ -22,6 +21,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerRequest.View {
+
 
     @Inject lateinit var presenter: BeerRequest.Presenter
     @Inject lateinit var adapter: BeerAdapter
@@ -70,7 +70,16 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
 
     private fun requestFetch(page: Int, perPage: Int) {
         Timber.d("requstFetch ${page} / ${perPage} ")
-        presenter.getBeer(page, perPage)
+        presenter.requestFetch(page, perPage)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.cancelFetch()
+    }
+
+    override fun update(items: List<Beer>) {
+        adapter.update(items)
     }
 
     override fun showProgress() {

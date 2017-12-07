@@ -3,7 +3,7 @@ package beer.hucet.com.beer.presenter
 import beer.hucet.com.beer.repository.BeerRepository
 import beer.hucet.com.beer.scheduler.DefaultSchedulerProvider
 import beer.hucet.com.beer.scheduler.SchedulerProvider
-import beer.hucet.com.beer.view.adapter.BeerAdapter
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 /**
@@ -12,10 +12,12 @@ import timber.log.Timber
 class BeerPresenter(
         private val views: Set<BeerRequest.View>,
         private val repository: BeerRepository,
-        private val adapter: BeerAdapter,
         private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 ) : BeerRequest.Presenter {
-    override fun getBeer(page: Int, perPage: Int) {
+
+    private var compositeDisposable = CompositeDisposable()
+
+    override fun requestFetch(page: Int, perPage: Int) {
         repository.getPagingBeer(page, perPage)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
@@ -31,9 +33,11 @@ class BeerPresenter(
                         it.hideProgress()
                     }
                 }
-                .subscribe({
-                    Timber.d("subscribe ${it}")
-                    adapter.update(it)
+                .subscribe({ items ->
+                    Timber.d("subscribe ${items}")
+                    views.forEach {
+                        it.update(items)
+                    }
                 }, {
                     Timber.e("error ${it}")
                     views.forEach {
@@ -42,5 +46,12 @@ class BeerPresenter(
                 }, {
                     Timber.d("Complete")
                 })
+                .let {
+                    compositeDisposable.add(it)
+                }
+    }
+
+    override fun cancelFetch() {
+        compositeDisposable.clear()
     }
 }
