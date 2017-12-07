@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import beer.hucet.com.beer.api.PunkApi
 import beer.hucet.com.beer.model.Beer
+import io.reactivex.Flowable
 import retrofit2.Response
 
 /**
@@ -11,13 +12,8 @@ import retrofit2.Response
  */
 class BeerRepository(private val punkApi: PunkApi) {
 
-    private val result = MediatorLiveData<Resource<ResultType>>()
 
-    fun getPagingBeer(page: Int, perPage: Int): LiveData<Response<List<Beer>>> {
-        return punkApi.getPagingBeer(page, perPage)
-    }
+    fun getPagingBeer(page: Int, perPage: Int): Flowable<List<Beer>> =
+            punkApi.getPagingBeer(page, perPage)
 
-    private fun fetchFromNetwork() {
-
-    }
 }

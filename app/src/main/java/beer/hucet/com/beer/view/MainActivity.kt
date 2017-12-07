@@ -1,5 +1,6 @@
 package beer.hucet.com.beer.view
 
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,11 +9,9 @@ import android.support.v7.widget.LinearLayoutManager
 import beer.hucet.com.beer.R
 import beer.hucet.com.beer.glide.GlideApp
 import beer.hucet.com.beer.model.Beer
-import beer.hucet.com.beer.presenter.BeerRequest
 import beer.hucet.com.beer.view.adapter.BeerAdapter
 import beer.hucet.com.beer.view.adapter.BeerViewHolder
 import beer.hucet.com.beer.view.paging.LinearEndScrollListener
-import beer.hucet.com.beer.view.paging.PagingAvailability
 import beer.hucet.com.beer.viewmodel.BeerViewModel
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -21,18 +20,19 @@ import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerRequest.View {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
 
-    @Inject lateinit var presenter: BeerRequest.Presenter
     @Inject lateinit var adapter: BeerAdapter
-    @Inject lateinit var pagingAvailability: PagingAvailability
     @Inject lateinit var beerViewModel: BeerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initRecycler()
+        beerViewModel.getBeersLivData().observe(this, Observer {
+            adapter.update(it!!)
+        })
     }
 
 
@@ -55,49 +55,15 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, BeerReques
 
         }
         recycler.addOnScrollListener(LinearEndScrollListener(linearLayoutManager, {
-            if (pagingAvailability.availablePaging()) {
-                requestNextPage()
-            }
         }))
-        requestNextPage()
     }
 
-    private fun requestNextPage() {
-        beerViewModel.requestFetch()
-    }
 
     private fun startDetailActivity(beer: Beer) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(DetailActivity.KEY_BEER, beer)
         startActivity(intent)
     }
-
-    private fun requestFetch(page: Int, perPage: Int) {
-        Timber.d("requstFetch ${page} / ${perPage} ")
-        presenter.requestFetch(page, perPage)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.cancelFetch()
-    }
-
-    override fun update(items: List<Beer>) {
-        adapter.update(items)
-    }
-
-    override fun showProgress() {
-//        Toast.makeText(this, "showProgress", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun hideProgress() {
-//        Toast.makeText(this, "hideProgress", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showError() {
-//        Toast.makeText(this, "showError", Toast.LENGTH_SHORT).show()
-    }
-
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
