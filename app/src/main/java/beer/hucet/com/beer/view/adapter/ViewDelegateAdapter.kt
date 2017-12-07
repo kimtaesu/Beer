@@ -11,7 +11,6 @@ import beer.hucet.com.beer.R
 import beer.hucet.com.beer.glide.GlideRequests
 import beer.hucet.com.beer.model.Basic
 import beer.hucet.com.beer.model.Beer
-import beer.hucet.com.beer.model.Progress
 
 /**
  * Created by taesu on 2017-12-05.
@@ -21,16 +20,6 @@ sealed class ViewDelegateAdapter<T : RecyclerView.ViewHolder, R : Basic> {
 
     abstract fun onCreateViewHolder(parent: ViewGroup): T
 
-    class ProggressDelegate : ViewDelegateAdapter<ProgressViewHolder, Progress>() {
-        override fun onBindViewHolder(holder: ProgressViewHolder, position: Int, item: Progress, glideRequests: GlideRequests?) {
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup): ProgressViewHolder {
-            val v = LayoutInflater.from(parent?.context)
-                    .inflate(R.layout.list_item_progress, parent, false)
-            return ProgressViewHolder(v)
-        }
-    }
 
     class BeerDelegate : ViewDelegateAdapter<BeerViewHolder, Beer>() {
         override fun onBindViewHolder(holder: BeerViewHolder, position: Int, item: Beer, glideRequests: GlideRequests?) {

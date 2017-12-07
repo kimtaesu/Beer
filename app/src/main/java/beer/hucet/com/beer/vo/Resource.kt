@@ -1,11 +1,11 @@
 package beer.hucet.com.beer.vo
 
-import beer.hucet.com.beer.view.paging.LoadingState
+import beer.hucet.com.beer.view.paging.LoadState
 
 /**
  * Created by taesu on 2017-12-07.
  */
-class Resource<T>(val status: LoadingState, val data: T?, val message: String?) {
+class Resource<T>(val status: LoadState, val data: T, val message: String) {
 
 //    companion object {
 //

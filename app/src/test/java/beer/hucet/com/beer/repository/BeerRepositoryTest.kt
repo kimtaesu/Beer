@@ -27,7 +27,7 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
         beforeEachTest {
             whenever(punkApi.getPagingBeer(1, 1)).thenReturn(Flowable.just(listOf()))
         }
-        on("State [Complete]")
+        on("LoadState [Complete]")
         {
 
             val testSubscribe = subject.getPagingBeer(1, 1).test()
@@ -37,7 +37,7 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
                 testSubscribe.assertNoErrors()
             }
         }
-        on("State [Error]")
+        on("LoadState [Error]")
         {
 
             whenever(punkApi.getPagingBeer(1, 1))

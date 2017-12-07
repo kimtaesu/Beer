@@ -12,7 +12,10 @@ class LinearEndScrollListener(
         private val layoutManager: LinearLayoutManager,
         private val onLoader: () -> Unit
 ) : RecyclerView.OnScrollListener() {
-    private val PAGE_SIZE = 10
+    companion object {
+        val PAGE_SIZE = 80
+    }
+
     override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         val visibleItemCount = layoutManager.childCount

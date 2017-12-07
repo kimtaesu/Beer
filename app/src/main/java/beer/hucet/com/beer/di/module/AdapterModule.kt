@@ -18,8 +18,7 @@ class AdapterModule {
     @PerActivity
     @Provides
     fun provideAdapter(): BeerAdapter {
-        val map = mapOf(ItemType.Progress.type to ViewDelegateAdapter.ProggressDelegate(),
-                ItemType.Beer.type to ViewDelegateAdapter.BeerDelegate())
+        val map = mapOf(ItemType.Beer.type to ViewDelegateAdapter.BeerDelegate())
         return BeerAdapter(map as Map<Int, ViewDelegateAdapter<RecyclerView.ViewHolder, Basic>>)
     }
 }

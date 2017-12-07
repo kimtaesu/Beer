@@ -7,7 +7,6 @@ import beer.hucet.com.beer.OnBeerClickListener
 import beer.hucet.com.beer.glide.GlideRequests
 import beer.hucet.com.beer.model.Basic
 import beer.hucet.com.beer.model.Beer
-import beer.hucet.com.beer.model.Progress
 
 /**
  * Created by taesu on 2017-12-05.
@@ -58,11 +57,8 @@ class BeerAdapter(
     override fun getItemViewType(position: Int): Int = items[position].getViewtype()
 
     fun update(items: List<Beer>) {
-        removeEndProgress()
-
         val start = itemCount
         this.items.addAll(items)
-        addEndProgress()
         notifyItemRangeInserted(start, this.items.size)
     }
 
@@ -75,11 +71,6 @@ class BeerAdapter(
             this.items.removeAt(lastIndex)
             notifyItemRemoved(lastIndex)
         }
-    }
-
-    private fun addEndProgress() {
-        this.items.add(Progress())
-        notifyItemInserted(getLastIndex())
     }
 
 
