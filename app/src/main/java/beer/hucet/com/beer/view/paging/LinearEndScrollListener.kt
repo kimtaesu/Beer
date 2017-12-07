@@ -13,7 +13,7 @@ class LinearEndScrollListener(
         private val onLoader: () -> Unit
 ) : RecyclerView.OnScrollListener() {
     companion object {
-        val PAGE_SIZE = 80
+        val PAGE_SIZE = 30
     }
 
     override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {

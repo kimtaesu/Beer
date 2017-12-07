@@ -1,6 +1,5 @@
 package beer.hucet.com.beer.viewmodel
 
-import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import beer.hucet.com.beer.model.Beer
@@ -11,7 +10,6 @@ import beer.hucet.com.beer.view.paging.LoadState
 import beer.hucet.com.beer.view.paging.ResourcePage
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,6 +25,7 @@ class BeerViewModel @Inject constructor(
     private val nextPage = NextPageHandler(repository, schedulerProvider)
     private val compositeDisposable = CompositeDisposable()
     private val beers = MutableLiveData<List<Beer>>()
+    private val error = MutableLiveData<String>()
     fun requestFetch() {
         nextPage.nextPage()
     }
@@ -38,6 +37,8 @@ class BeerViewModel @Inject constructor(
         compositeDisposable.clear()
     }
 
+    fun getErrorLiveData() = error
+
     inner class NextPageHandler(
             private val repository: BeerRepository,
             private val schedulerProvider: DefaultSchedulerProvider
@@ -48,18 +49,20 @@ class BeerViewModel @Inject constructor(
             if (loadMoreState.value?.isPageAvailable() == false)
                 return
             loadMoreState.postValue(ResourcePage(LoadState.LOADING, false))
-
             repository.getPagingBeer(curPage.incrementAndGet(), LinearEndScrollListener.PAGE_SIZE)
                     .subscribeOn(schedulerProvider.io())
                     .subscribe({
                         beers.postValue(it)
                         loadMoreState.postValue(ResourcePage(LoadState.SUCCESS, it.isEmpty()))
-                    }, {
+                    }, { e ->
                         loadMoreState.postValue(ResourcePage(LoadState.ERROR, false))
+                        error.postValue(e.message)
                     })
                     .let { compositeDisposable.add(it) }
         }
 
         fun getLoadMore() = loadMoreState
     }
+
+
 }
