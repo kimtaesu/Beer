@@ -112,6 +112,7 @@ dependencies {
     implementation httpDeps.converter_moshi
     implementation httpDeps.retrofit
     implementation httpDeps.retrofitRxjavaAdapter
+    testImplementation testDeps.mockWebServer
 
 }
 //afterEvaluate {
