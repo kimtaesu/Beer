@@ -6,7 +6,7 @@ import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.preference.PreferenceWrapper
 import beer.hucet.com.beer.scheduler.DefaultSchedulerProvider
 import beer.hucet.com.beer.scheduler.SchedulerProvider
-import beer.hucet.com.beer.usecase.FlowableUseCase
+import beer.hucet.com.beer.usecase.BeerUseCase
 import beer.hucet.com.beer.view.paging.LoadState
 import beer.hucet.com.beer.view.paging.ResourcePage
 import io.reactivex.disposables.CompositeDisposable
@@ -19,7 +19,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class BeerViewModel @Inject constructor(
-        useCase: FlowableUseCase,
+        useCase: BeerUseCase,
         preferenceWrapper: PreferenceWrapper,
         schedulerProvider: SchedulerProvider = DefaultSchedulerProvider())
     : ViewModel() {
@@ -42,7 +42,7 @@ class BeerViewModel @Inject constructor(
     fun getErrorLiveData() = error
 
     inner class NextPageHandler(
-            private val useCase: FlowableUseCase,
+            private val useCase: BeerUseCase,
             private val preferenceWrapper: PreferenceWrapper,
             private val schedulerProvider: SchedulerProvider
     ) {

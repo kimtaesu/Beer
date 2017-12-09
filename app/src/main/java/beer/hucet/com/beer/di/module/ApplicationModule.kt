@@ -13,7 +13,8 @@ import javax.inject.Singleton
         RepositoryModule::class,
         NetworkModule::class,
         ViewModelModule::class,
-        DataBaseModule::class
+        DataBaseModule::class,
+        UseCaseModule::class
 ))
 open class ApplicationModule {
     @Provides

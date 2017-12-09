@@ -8,15 +8,14 @@ import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.preference.PreferenceWrapper
 import beer.hucet.com.beer.repository.BeerRepository
 import beer.hucet.com.beer.scheduler.TestSchedulerProvider
-import beer.hucet.com.beer.usecase.FlowableUseCase
-import beer.hucet.com.beer.usecase.UseCaseImpl
+import beer.hucet.com.beer.usecase.BeerUseCase
 import beer.hucet.com.beer.view.paging.LoadState
 import beer.hucet.com.beer.view.paging.ResourcePage
 import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.schedulers.TestScheduler
 import org.amshove.kluent.any
 import org.junit.After
@@ -45,7 +44,7 @@ class BeerViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock private lateinit var beerViewModel: BeerViewModel
-    private lateinit var useCase: FlowableUseCase
+    private lateinit var useCase: BeerUseCase
     @Mock private lateinit var repository: BeerRepository
     @Mock private lateinit var pref: PreferenceWrapper
     private val testScheduler = TestScheduler()
@@ -54,8 +53,8 @@ class BeerViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         whenever(pref.getPerPageSize()).thenReturn(10)
-        whenever(repository.getPagingBeers(any(), any())).thenReturn(Flowable.just(testData))
-        useCase = UseCaseImpl(repository)
+        whenever(repository.getPagingBeers(any(), any())).thenReturn(Single.just(testData))
+        useCase = BeerUseCase(repository)
         beerViewModel = BeerViewModel(useCase, pref, TestSchedulerProvider(testScheduler))
     }
 
@@ -80,7 +79,7 @@ class BeerViewModelTest {
     @Test
     fun errorFetch() {
         val errorMsg = "ABC"
-        whenever(repository.getPagingBeers(any(), any())).thenReturn(Flowable.just(1).map { throw RuntimeException(errorMsg) })
+        whenever(repository.getPagingBeers(any(), any())).thenReturn(Single.just(1).map { throw RuntimeException(errorMsg) })
 
         beerViewModel.getErrorLiveData().observeForever(errorObser)
         beerViewModel.getBeersLivData().observeForever(observer)

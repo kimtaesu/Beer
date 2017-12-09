@@ -2,7 +2,7 @@ package beer.hucet.com.beer.repository
 
 import beer.hucet.com.beer.datasource.NetworkDataSource
 import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Flowable
+import io.reactivex.Single
 import org.amshove.kluent.mock
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
@@ -24,7 +24,7 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
         }
 
         beforeEachTest {
-            whenever(networkDatasource.getPageBeers(1, 1)).thenReturn(Flowable.just(listOf()))
+            whenever(networkDatasource.getPageBeers(1, 1)).thenReturn(Single.just(listOf()))
         }
         on("LoadState [Complete]")
         {
@@ -40,7 +40,7 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
         {
 
             whenever(networkDatasource.getPageBeers(1, 1))
-                    .thenReturn(Flowable.just(1).map { throw RuntimeException() })
+                    .thenReturn(Single.just(1).map { throw RuntimeException() })
             val testSubscribe = subject.getPagingBeers(1, 1).test()
             it("Assert noComplete, error") {
                 testSubscribe.assertError(RuntimeException::class.java)

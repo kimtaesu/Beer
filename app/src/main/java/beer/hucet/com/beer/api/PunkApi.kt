@@ -1,10 +1,7 @@
 package beer.hucet.com.beer.api
 
-import android.arch.lifecycle.LiveData
 import beer.hucet.com.beer.model.Beer
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import retrofit2.Call
+import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -14,5 +11,5 @@ import retrofit2.http.Query
  */
 interface PunkApi {
     @GET("beers")
-    fun getPageBeer(@Query("page") page: Int, @Query("per_page") perPage: Int): Flowable<Response<List<Beer>>>
+    fun getPageBeer(@Query("page") page: Int, @Query("per_page") perPage: Int): Single<Response<List<Beer>>>
 }
