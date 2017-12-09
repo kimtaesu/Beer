@@ -56,6 +56,9 @@ ext {
     okHttpVersion = '3.6.0'
     retrofitVersion = '2.2.0'
 
+    cacheDeps = [
+
+    ]
     firebaseDeps = [
             crash: "com.google.firebase:firebase-crash:$firebaseVersion"
     ]
