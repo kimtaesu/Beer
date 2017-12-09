@@ -1,6 +1,6 @@
 package beer.hucet.com.beer.repository
 
-import beer.hucet.com.beer.api.PunkApi
+import beer.hucet.com.beer.datasource.NetworkDataSource
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Flowable
 import org.amshove.kluent.mock
@@ -8,29 +8,28 @@ import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.jetbrains.spek.subject.SubjectSpek
-import org.junit.runner.RunWith
 
 /**
  * Created by taesu on 2017-12-05.
  */
 class BeerRepositoryTest : SubjectSpek<BeerRepository>({
 
-    val punkApi by memoized {
-        mock<PunkApi>()
+    val networkDatasource by memoized {
+        mock<NetworkDataSource>()
     }
     given("BeerRepository")
     {
         subject {
-            BeerRepository(punkApi)
+            BeerRepository(networkDatasource)
         }
 
         beforeEachTest {
-            whenever(punkApi.getPagingBeer(1, 1)).thenReturn(Flowable.just(listOf()))
+            whenever(networkDatasource.getPageBeers(1, 1)).thenReturn(Flowable.just(listOf()))
         }
         on("LoadState [Complete]")
         {
 
-            val testSubscribe = subject.getPagingBeer(1, 1).test()
+            val testSubscribe = subject.getPageBeers(1, 1).test()
             it("Assert complete, noErrors")
             {
                 testSubscribe.assertComplete()
@@ -40,9 +39,9 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
         on("LoadState [Error]")
         {
 
-            whenever(punkApi.getPagingBeer(1, 1))
+            whenever(networkDatasource.getPageBeers(1, 1))
                     .thenReturn(Flowable.just(1).map { throw RuntimeException() })
-            val testSubscribe = subject.getPagingBeer(1, 1).test()
+            val testSubscribe = subject.getPageBeers(1, 1).test()
             it("Assert noComplete, error") {
                 testSubscribe.assertError(RuntimeException::class.java)
                 testSubscribe.assertNotComplete()

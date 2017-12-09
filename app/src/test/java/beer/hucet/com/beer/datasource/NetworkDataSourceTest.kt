@@ -1,23 +1,23 @@
-package beer.hucet.com.beer.api
+package beer.hucet.com.beer.datasource
 
-import beer.hucet.com.beer.fixture.BeerFixture
+import beer.hucet.com.beer.api.PunkApi
+import beer.hucet.com.beer.exception.NetworkException
 import beer.hucet.com.beer.fixture.MockServerFixture
 import okhttp3.mockwebserver.MockWebServer
-import org.amshove.kluent.`should equal to`
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.io.IOException
 
 /**
- * Created by taesu on 2017-12-07.
+ * Created by taesu on 2017-12-09.
  */
-class PunkApiTest {
+class NetworkDataSourceTest {
     private lateinit var service: PunkApi
     private lateinit var mockWebServer: MockWebServer
+    private lateinit var networkDataSource: NetworkDataSource
     @Before
     fun createService() {
         mockWebServer = MockWebServer()
@@ -27,6 +27,7 @@ class PunkApiTest {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(PunkApi::class.java)
+        networkDataSource = NetworkDataSource(service)
     }
 
     @After
@@ -35,17 +36,14 @@ class PunkApiTest {
     }
 
     @Test
-    @Throws(IOException::class, InterruptedException::class)
-    fun getBeers() {
-        val testData = BeerFixture.deserializeBeers("default_punk.json")
-        MockServerFixture.enqueueResponse(mockWebServer, "default_punk.json")
-        service
-                .getPageBeer(1, 1)
+    fun networkError() {
+        MockServerFixture.enqueueResponse(mockWebServer, "default_punk.json", {
+            setResponseCode(400)
+        })
+        networkDataSource
+                .getPageBeers(1, 1)
+                .doOnError { }
                 .test()
-                .assertComplete()
-                .assertValue {
-                    it.body() == testData
-                }
-        mockWebServer.takeRequest().path `should equal to` "/beers?page=1&per_page=1"
+                .assertError(NetworkException::class.java)
     }
 }

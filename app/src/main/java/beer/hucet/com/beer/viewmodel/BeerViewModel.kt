@@ -49,7 +49,7 @@ class BeerViewModel @Inject constructor(
             if (loadMoreState.value?.isPageAvailable() == false)
                 return
             loadMoreState.postValue(ResourcePage(LoadState.LOADING, false))
-            repository.getPagingBeer(curPage.incrementAndGet(), LinearEndScrollListener.PAGE_SIZE)
+            repository.getPageBeers(curPage.incrementAndGet(), LinearEndScrollListener.PAGE_SIZE)
                     .subscribeOn(schedulerProvider.io())
                     .subscribe({
                         beers.postValue(it)

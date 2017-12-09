@@ -14,5 +14,5 @@ import retrofit2.http.Query
  */
 interface PunkApi {
     @GET("beers")
-    fun getPagingBeer(@Query("page") page: Int, @Query("per_page") perPage: Int): Flowable<Response<List<Beer>>>
+    fun getPageBeer(@Query("page") page: Int, @Query("per_page") perPage: Int): Flowable<Response<List<Beer>>>
 }

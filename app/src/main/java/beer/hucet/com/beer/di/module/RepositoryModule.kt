@@ -1,6 +1,7 @@
 package beer.hucet.com.beer.di.module
 
 import beer.hucet.com.beer.api.PunkApi
+import beer.hucet.com.beer.datasource.NetworkDataSource
 import beer.hucet.com.beer.repository.BeerRepository
 import dagger.Module
 import dagger.Provides
@@ -13,7 +14,9 @@ import javax.inject.Singleton
 class RepositoryModule {
     @Provides
     @Singleton
-    fun provideBeerRepository(punkApi: PunkApi): BeerRepository {
-        return BeerRepository(punkApi)
-    }
+    fun provideNetworkDataSource(api: PunkApi): NetworkDataSource = NetworkDataSource(api)
+
+    @Provides
+    @Singleton
+    fun provideBeerRepository(netowrk: NetworkDataSource): BeerRepository = BeerRepository(netowrk)
 }
