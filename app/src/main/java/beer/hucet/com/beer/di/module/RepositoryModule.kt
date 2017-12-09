@@ -2,6 +2,8 @@ package beer.hucet.com.beer.di.module
 
 import beer.hucet.com.beer.api.PunkApi
 import beer.hucet.com.beer.datasource.NetworkDataSource
+import beer.hucet.com.beer.persistence.BeerDatabase
+import beer.hucet.com.beer.preference.PreferenceWrapper
 import beer.hucet.com.beer.repository.BeerRepository
 import dagger.Module
 import dagger.Provides
@@ -18,5 +20,6 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideBeerRepository(netowrk: NetworkDataSource): BeerRepository = BeerRepository(netowrk)
+    fun provideBeerRepository(netowrk: NetworkDataSource, beerDatabase: BeerDatabase, pref: PreferenceWrapper): BeerRepository =
+            BeerRepository(netowrk, beerDatabase, pref)
 }

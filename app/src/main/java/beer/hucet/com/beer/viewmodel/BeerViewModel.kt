@@ -3,10 +3,10 @@ package beer.hucet.com.beer.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import beer.hucet.com.beer.model.Beer
+import beer.hucet.com.beer.preference.PreferenceWrapper
 import beer.hucet.com.beer.scheduler.DefaultSchedulerProvider
 import beer.hucet.com.beer.scheduler.SchedulerProvider
 import beer.hucet.com.beer.usecase.FlowableUseCase
-import beer.hucet.com.beer.view.paging.LinearEndScrollListener
 import beer.hucet.com.beer.view.paging.LoadState
 import beer.hucet.com.beer.view.paging.ResourcePage
 import io.reactivex.disposables.CompositeDisposable
@@ -20,10 +20,11 @@ import javax.inject.Singleton
 @Singleton
 class BeerViewModel @Inject constructor(
         useCase: FlowableUseCase,
+        preferenceWrapper: PreferenceWrapper,
         schedulerProvider: SchedulerProvider = DefaultSchedulerProvider())
     : ViewModel() {
 
-    private val nextPage = NextPageHandler(useCase, schedulerProvider)
+    private val nextPage = NextPageHandler(useCase, preferenceWrapper, schedulerProvider)
     private val compositeDisposable = CompositeDisposable()
     private val beers = MutableLiveData<List<Beer>>()
     private val error = MutableLiveData<String>()
@@ -42,6 +43,7 @@ class BeerViewModel @Inject constructor(
 
     inner class NextPageHandler(
             private val useCase: FlowableUseCase,
+            private val preferenceWrapper: PreferenceWrapper,
             private val schedulerProvider: SchedulerProvider
     ) {
         private var curPage = AtomicInteger()
@@ -50,7 +52,7 @@ class BeerViewModel @Inject constructor(
             if (loadMoreState.value?.isPageAvailable() == false)
                 return
             loadMoreState.postValue(ResourcePage(LoadState.LOADING, false))
-            useCase.getPagingBeer(curPage.incrementAndGet(), LinearEndScrollListener.PAGE_SIZE)
+            useCase.getPagingBeer(curPage.incrementAndGet(), preferenceWrapper.getPerPageSize())
                     .subscribeOn(schedulerProvider.io())
                     .subscribe({
                         beers.postValue(it)

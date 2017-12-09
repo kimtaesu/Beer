@@ -2,6 +2,10 @@ package beer.hucet.com.beer.preference
 
 import android.app.Application
 import android.support.annotation.VisibleForTesting
+import beer.hucet.com.beer.DEFAULT_FRESH_TIME
+import beer.hucet.com.beer.DEFAULT_PER_PAGE_SIZE
+import beer.hucet.com.beer.KEY_FRESH_TIME
+import beer.hucet.com.beer.KEY_PER_PAGE_SIZE
 import beer.hucet.com.beer.cache.RateLimiter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,9 +16,6 @@ import javax.inject.Singleton
 @Singleton
 class PreferenceWrapper @Inject constructor(
         private val application: Application) {
-
-    private val KEY_FRESH_TIME = "KEY_FRESH_TIME"
-    private val defaultFreshMilliSecond: Long = 60 * 1000
 
     fun getCachedTime(key: String, getTime: () -> Long = ::getNowTime): Long {
         val sharedPref = PreferenceHelper.defaultPrefs(application)
@@ -33,7 +34,12 @@ class PreferenceWrapper @Inject constructor(
 
     fun getFreshMilliSecond(): Long {
         val sharedPref = PreferenceHelper.defaultPrefs(application)
-        return sharedPref[KEY_FRESH_TIME, defaultFreshMilliSecond]!!
+        return sharedPref[KEY_FRESH_TIME, DEFAULT_FRESH_TIME]!!
+    }
+
+    fun getPerPageSize(): Int {
+        val sharedPref = PreferenceHelper.defaultPrefs(application)
+        return sharedPref[KEY_PER_PAGE_SIZE, DEFAULT_PER_PAGE_SIZE]!!
     }
 }
 

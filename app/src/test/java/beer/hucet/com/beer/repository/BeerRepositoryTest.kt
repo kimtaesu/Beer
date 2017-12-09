@@ -20,7 +20,7 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
     given("BeerRepository")
     {
         subject {
-            BeerRepository(networkDatasource)
+            BeerRepository(networkDatasource, mock(), mock())
         }
 
         beforeEachTest {

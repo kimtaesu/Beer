@@ -1,8 +1,8 @@
 package beer.hucet.com.beer.view.paging
 
-import android.support.v7.widget.RecyclerView
-import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import beer.hucet.com.beer.preference.PreferenceWrapper
 
 
 /**
@@ -10,11 +10,10 @@ import android.support.v7.widget.LinearLayoutManager
  */
 class LinearEndScrollListener(
         private val layoutManager: LinearLayoutManager,
+        private val preferenceWrapper: PreferenceWrapper,
         private val onLoader: () -> Unit
+
 ) : RecyclerView.OnScrollListener() {
-    companion object {
-        val PAGE_SIZE = 30
-    }
 
     override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
@@ -24,7 +23,7 @@ class LinearEndScrollListener(
 
         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                 && firstVisibleItemPosition >= 0
-                && totalItemCount >= PAGE_SIZE) {
+                && totalItemCount >= preferenceWrapper.getPerPageSize()) {
             onLoader()
         }
     }

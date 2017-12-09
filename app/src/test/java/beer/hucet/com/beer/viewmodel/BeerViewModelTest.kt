@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import beer.hucet.com.beer.TestApplication
 import beer.hucet.com.beer.fixture.BeerFixture
 import beer.hucet.com.beer.model.Beer
+import beer.hucet.com.beer.preference.PreferenceWrapper
 import beer.hucet.com.beer.repository.BeerRepository
 import beer.hucet.com.beer.scheduler.TestSchedulerProvider
 import beer.hucet.com.beer.usecase.FlowableUseCase
@@ -46,15 +47,16 @@ class BeerViewModelTest {
     @Mock private lateinit var beerViewModel: BeerViewModel
     private lateinit var useCase: FlowableUseCase
     @Mock private lateinit var repository: BeerRepository
+    @Mock private lateinit var pref: PreferenceWrapper
     private val testScheduler = TestScheduler()
     private val testData = BeerFixture.deserializeBeers("default_punk.json")
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-
+        whenever(pref.getPerPageSize()).thenReturn(10)
         whenever(repository.getPagingBeers(any(), any())).thenReturn(Flowable.just(testData))
         useCase = UseCaseImpl(repository)
-        beerViewModel = BeerViewModel(useCase, TestSchedulerProvider(testScheduler))
+        beerViewModel = BeerViewModel(useCase, pref, TestSchedulerProvider(testScheduler))
     }
 
     @After
