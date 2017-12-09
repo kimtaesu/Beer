@@ -3,8 +3,9 @@ package beer.hucet.com.beer.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import beer.hucet.com.beer.model.Beer
-import beer.hucet.com.beer.repository.BeerRepository
 import beer.hucet.com.beer.scheduler.DefaultSchedulerProvider
+import beer.hucet.com.beer.scheduler.SchedulerProvider
+import beer.hucet.com.beer.usecase.FlowableUseCase
 import beer.hucet.com.beer.view.paging.LinearEndScrollListener
 import beer.hucet.com.beer.view.paging.LoadState
 import beer.hucet.com.beer.view.paging.ResourcePage
@@ -18,11 +19,11 @@ import javax.inject.Singleton
  */
 @Singleton
 class BeerViewModel @Inject constructor(
-        repository: BeerRepository,
-        schedulerProvider: DefaultSchedulerProvider)
+        useCase: FlowableUseCase,
+        schedulerProvider: SchedulerProvider = DefaultSchedulerProvider())
     : ViewModel() {
 
-    private val nextPage = NextPageHandler(repository, schedulerProvider)
+    private val nextPage = NextPageHandler(useCase, schedulerProvider)
     private val compositeDisposable = CompositeDisposable()
     private val beers = MutableLiveData<List<Beer>>()
     private val error = MutableLiveData<String>()
@@ -40,8 +41,8 @@ class BeerViewModel @Inject constructor(
     fun getErrorLiveData() = error
 
     inner class NextPageHandler(
-            private val repository: BeerRepository,
-            private val schedulerProvider: DefaultSchedulerProvider
+            private val useCase: FlowableUseCase,
+            private val schedulerProvider: SchedulerProvider
     ) {
         private var curPage = AtomicInteger()
         private val loadMoreState = MutableLiveData<ResourcePage>()
@@ -49,7 +50,7 @@ class BeerViewModel @Inject constructor(
             if (loadMoreState.value?.isPageAvailable() == false)
                 return
             loadMoreState.postValue(ResourcePage(LoadState.LOADING, false))
-            repository.getPageBeers(curPage.incrementAndGet(), LinearEndScrollListener.PAGE_SIZE)
+            useCase.getPagingBeer(curPage.incrementAndGet(), LinearEndScrollListener.PAGE_SIZE)
                     .subscribeOn(schedulerProvider.io())
                     .subscribe({
                         beers.postValue(it)
@@ -63,6 +64,4 @@ class BeerViewModel @Inject constructor(
 
         fun getLoadMore() = loadMoreState
     }
-
-
 }

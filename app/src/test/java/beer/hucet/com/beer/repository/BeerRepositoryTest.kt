@@ -29,7 +29,7 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
         on("LoadState [Complete]")
         {
 
-            val testSubscribe = subject.getPageBeers(1, 1).test()
+            val testSubscribe = subject.getPagingBeers(1, 1).test()
             it("Assert complete, noErrors")
             {
                 testSubscribe.assertComplete()
@@ -41,7 +41,7 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
 
             whenever(networkDatasource.getPageBeers(1, 1))
                     .thenReturn(Flowable.just(1).map { throw RuntimeException() })
-            val testSubscribe = subject.getPageBeers(1, 1).test()
+            val testSubscribe = subject.getPagingBeers(1, 1).test()
             it("Assert noComplete, error") {
                 testSubscribe.assertError(RuntimeException::class.java)
                 testSubscribe.assertNotComplete()

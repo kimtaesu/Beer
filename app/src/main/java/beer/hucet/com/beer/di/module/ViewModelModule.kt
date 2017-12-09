@@ -2,6 +2,10 @@ package beer.hucet.com.beer.di.module
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import beer.hucet.com.beer.scheduler.DefaultSchedulerProvider
+import beer.hucet.com.beer.scheduler.SchedulerProvider
+import beer.hucet.com.beer.usecase.FlowableUseCase
+import beer.hucet.com.beer.usecase.UseCaseImpl
 import beer.hucet.com.beer.viewmodel.BeerViewModel
 import beer.hucet.com.beer.viewmodel.BeerViewModelFactory
 import dagger.Binds
@@ -25,6 +29,13 @@ abstract class ViewModelModule {
 
     @Binds
     abstract fun bindViewModelFactory(factory: BeerViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    abstract fun bindSchedulerProvider(de: DefaultSchedulerProvider): SchedulerProvider
+
+    @Binds
+    abstract fun bindUseCase(de: UseCaseImpl): FlowableUseCase
+
 
     @Documented
     @Retention(RetentionPolicy.RUNTIME)

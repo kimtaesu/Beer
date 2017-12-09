@@ -10,4 +10,10 @@ class ResourcePage(
     fun isPageAvailable(): Boolean = state != LoadState.LOADING && !isLastPage
 
     fun getLoadState(): LoadState = state
+
+    override fun equals(other: Any?): Boolean {
+        val other = other as? ResourcePage
+        other ?: return false
+        return other.getLoadState() == state && other.isLastPage == isLastPage
+    }
 }
