@@ -2,7 +2,7 @@ package beer.hucet.com.beer.view.paging
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import beer.hucet.com.beer.preference.PreferenceWrapper
+import beer.hucet.com.beer.preference.AppPreference
 
 
 /**
@@ -10,7 +10,6 @@ import beer.hucet.com.beer.preference.PreferenceWrapper
  */
 class LinearEndScrollListener(
         private val layoutManager: LinearLayoutManager,
-        private val preferenceWrapper: PreferenceWrapper,
         private val onLoader: () -> Unit
 
 ) : RecyclerView.OnScrollListener() {
@@ -23,7 +22,7 @@ class LinearEndScrollListener(
 
         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                 && firstVisibleItemPosition >= 0
-                && totalItemCount >= preferenceWrapper.getPerPageSize()) {
+                && totalItemCount >= AppPreference.perPageSize) {
             onLoader()
         }
     }

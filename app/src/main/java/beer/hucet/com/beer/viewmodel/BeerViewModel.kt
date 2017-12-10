@@ -2,12 +2,14 @@ package beer.hucet.com.beer.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import beer.hucet.com.beer.ResolveType
 import beer.hucet.com.beer.model.Beer
-import beer.hucet.com.beer.preference.PreferenceWrapper
+import beer.hucet.com.beer.preference.AppPreference
 import beer.hucet.com.beer.scheduler.DefaultSchedulerProvider
 import beer.hucet.com.beer.scheduler.SchedulerProvider
 import beer.hucet.com.beer.usecase.BeerUseCase
 import beer.hucet.com.beer.view.paging.LoadState
+import beer.hucet.com.beer.view.paging.Paging
 import beer.hucet.com.beer.view.paging.ResourcePage
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.atomic.AtomicInteger
@@ -20,16 +22,15 @@ import javax.inject.Singleton
 @Singleton
 class BeerViewModel @Inject constructor(
         useCase: BeerUseCase,
-        preferenceWrapper: PreferenceWrapper,
         schedulerProvider: SchedulerProvider = DefaultSchedulerProvider())
     : ViewModel() {
 
-    private val nextPage = NextPageHandler(useCase, preferenceWrapper, schedulerProvider)
+    private val nextPage = NextPageHandler(useCase, schedulerProvider)
     private val compositeDisposable = CompositeDisposable()
     private val beers = MutableLiveData<List<Beer>>()
     private val error = MutableLiveData<String>()
-    fun requestFetch() {
-        nextPage.nextPage()
+    fun requestFetch(type : ResolveType) {
+        nextPage.nextPage(type)
     }
 
     fun getBeersLivData(): MutableLiveData<List<Beer>> = beers
@@ -43,16 +44,15 @@ class BeerViewModel @Inject constructor(
 
     inner class NextPageHandler(
             private val useCase: BeerUseCase,
-            private val preferenceWrapper: PreferenceWrapper,
             private val schedulerProvider: SchedulerProvider
     ) {
         private var curPage = AtomicInteger()
         private val loadMoreState = MutableLiveData<ResourcePage>()
-        fun nextPage() {
+        fun nextPage(type: ResolveType) {
             if (loadMoreState.value?.isPageAvailable() == false)
                 return
             loadMoreState.postValue(ResourcePage(LoadState.LOADING, false))
-            useCase.getPagingBeer(curPage.incrementAndGet(), preferenceWrapper.getPerPageSize())
+            useCase.getPagingBeer(Paging(type, curPage.incrementAndGet(), AppPreference.perPageSize))
                     .subscribeOn(schedulerProvider.io())
                     .subscribe({
                         beers.postValue(it)

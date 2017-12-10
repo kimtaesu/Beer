@@ -117,7 +117,10 @@ dependencies {
     implementation httpDeps.retrofit
     implementation httpDeps.retrofitRxjavaAdapter
     testImplementation testDeps.mockWebServer
-
+    implementation opensourceDeps.prefHolder
+}
+repositories {
+    maven { url 'https://jitpack.io' }
 }
 //afterEvaluate {
 //    compileDebugUnitTestKotlin {

@@ -2,10 +2,10 @@ package beer.hucet.com.beer.viewmodel
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
+import beer.hucet.com.beer.ResolveType
 import beer.hucet.com.beer.TestApplication
 import beer.hucet.com.beer.fixture.BeerFixture
 import beer.hucet.com.beer.model.Beer
-import beer.hucet.com.beer.preference.PreferenceWrapper
 import beer.hucet.com.beer.repository.BeerRepository
 import beer.hucet.com.beer.scheduler.TestSchedulerProvider
 import beer.hucet.com.beer.usecase.BeerUseCase
@@ -46,16 +46,14 @@ class BeerViewModelTest {
     @Mock private lateinit var beerViewModel: BeerViewModel
     private lateinit var useCase: BeerUseCase
     @Mock private lateinit var repository: BeerRepository
-    @Mock private lateinit var pref: PreferenceWrapper
     private val testScheduler = TestScheduler()
     private val testData = BeerFixture.deserializeBeers("default_punk.json")
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        whenever(pref.getPerPageSize()).thenReturn(10)
-        whenever(repository.getPagingBeers(any(), any())).thenReturn(Single.just(testData))
+        whenever(repository.getPagingBeers(any())).thenReturn(Single.just(testData))
         useCase = BeerUseCase(repository)
-        beerViewModel = BeerViewModel(useCase, pref, TestSchedulerProvider(testScheduler))
+        beerViewModel = BeerViewModel(useCase, TestSchedulerProvider(testScheduler))
     }
 
     @After
@@ -66,7 +64,7 @@ class BeerViewModelTest {
     fun loadFetch() {
         beerViewModel.getBeersLivData().observeForever(observer)
         beerViewModel.getLoadMoreLiveData().observeForever(stateObser)
-        beerViewModel.requestFetch()
+        beerViewModel.requestFetch(ResolveType.Normal())
 
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
@@ -79,12 +77,12 @@ class BeerViewModelTest {
     @Test
     fun errorFetch() {
         val errorMsg = "ABC"
-        whenever(repository.getPagingBeers(any(), any())).thenReturn(Single.just(1).map { throw RuntimeException(errorMsg) })
+        whenever(repository.getPagingBeers(any())).thenReturn(Single.just(1).map { throw RuntimeException(errorMsg) })
 
         beerViewModel.getErrorLiveData().observeForever(errorObser)
         beerViewModel.getBeersLivData().observeForever(observer)
         beerViewModel.getLoadMoreLiveData().observeForever(stateObser)
-        beerViewModel.requestFetch()
+        beerViewModel.requestFetch(ResolveType.Normal())
 
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 

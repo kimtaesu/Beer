@@ -9,10 +9,10 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import beer.hucet.com.beer.R
+import beer.hucet.com.beer.ResolveType
 import beer.hucet.com.beer.databinding.ActivityMainBinding
 import beer.hucet.com.beer.glide.GlideApp
 import beer.hucet.com.beer.model.Beer
-import beer.hucet.com.beer.preference.PreferenceWrapper
 import beer.hucet.com.beer.view.adapter.BeerAdapter
 import beer.hucet.com.beer.view.adapter.BeerViewHolder
 import beer.hucet.com.beer.view.paging.LinearEndScrollListener
@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject lateinit var adapter: BeerAdapter
     @Inject lateinit var beerViewModel: BeerViewModel
-    @Inject lateinit var pref: PreferenceWrapper
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,11 +76,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             }
 
         }
-        recycler.addOnScrollListener(LinearEndScrollListener(linearLayoutManager, pref, {
-            beerViewModel.requestFetch()
+        recycler.addOnScrollListener(LinearEndScrollListener(linearLayoutManager, {
+            beerViewModel.requestFetch(ResolveType.Normal())
         }))
 
-        beerViewModel.requestFetch()
+        beerViewModel.requestFetch(ResolveType.Normal())
     }
 
 

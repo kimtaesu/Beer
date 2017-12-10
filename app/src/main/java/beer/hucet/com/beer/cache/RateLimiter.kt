@@ -1,21 +1,22 @@
 package beer.hucet.com.beer.cache
 
+import beer.hucet.com.beer.preference.AppPreference
+import javax.inject.Inject
+import javax.inject.Singleton
+
 /**
  * Created by taesu on 2017-12-09.
  */
-class RateLimiter constructor(
-        private val milliSecond: Long) {
-
-    companion object {
-        fun now() = System.currentTimeMillis()
-    }
+@Singleton
+class RateLimiter @Inject constructor() {
 
     @Synchronized
     fun shouldFetch(upTime: Long): Boolean {
-        val now = now()
-        if (now - upTime > milliSecond) {
+        if (upTime > AppPreference.freshTime) {
             return true
         }
         return false
     }
+
+
 }
