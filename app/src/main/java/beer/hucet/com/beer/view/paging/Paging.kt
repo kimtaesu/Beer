@@ -10,21 +10,10 @@ data class Paging(
         val page: Int,
         val perPage: Int
 ) {
-    fun startPosition(): Long {
-        if (checkPageZero())
-            perPage
-        return ((page - 1) * perPage).toLong()
-    }
 
-    fun endPosition(): Long {
-        if (checkPageZero())
-            perPage
-        return (page * perPage).toLong()
-    }
-
-    fun checkPageZero(): Boolean {
+    fun startIndex(): Int {
         if (page < 1)
-            return true
-        return false
+            return 0
+        return (page - 1) * perPage
     }
 }

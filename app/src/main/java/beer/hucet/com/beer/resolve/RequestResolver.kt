@@ -27,7 +27,7 @@ class RequestResolver(
                                 it
                             }
                 else
-                    db.beerDao().getPagingBeers(page.startPosition(), page.endPosition())
+                    db.beerDao().getPagingBeers(page.startIndex(), page.perPage)
             }
         }
     }
