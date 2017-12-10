@@ -25,4 +25,7 @@ interface BeerDao : BaseDao<Beer> {
     @Query("SELECT * FROM beers")
     fun getAllBeers(): Single<List<Beer>>
 
+    @Query("SELECT * FROM beers LIMIT :startId, :endId")
+    fun getPagingBeers(startId: Long, endId: Long): Single<List<Beer>>
+
 }

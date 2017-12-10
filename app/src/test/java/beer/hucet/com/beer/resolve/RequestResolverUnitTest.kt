@@ -34,7 +34,7 @@ class RequestResolverUnitTest {
         whenever(upTimeProvider.provide(any())).thenReturn(1)
         whenever(rateLimit.shouldFetch(any())).thenReturn(true)
         whenever(db.beerDao()).thenReturn(dao)
-        whenever(dao.getAllBeers()).thenReturn(Single.just(testData))
+        whenever(dao.getPagingBeers(any(), any())).thenReturn(Single.just(testData))
         resolver = RequestResolver(networkDataSource, db, rateLimit, upTimeProvider)
     }
 
@@ -45,6 +45,7 @@ class RequestResolverUnitTest {
                 .assertComplete()
                 .assertValue { it == testData }
 
+        verify(networkDataSource, times(1)).getPageBeers(any(), any())
         verify(dao, times(1)).insertAll(testData)
     }
 
@@ -58,6 +59,6 @@ class RequestResolverUnitTest {
                 .assertValue { it == testData }
 
         verify(networkDataSource, never()).getPageBeers(any(), any())
-        verify(dao, times(1)).getAllBeers()
+        verify(dao, times(1)).getPagingBeers(any(), any())
     }
 }

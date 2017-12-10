@@ -12,7 +12,6 @@ import beer.hucet.com.beer.model.Beer
 @Database(entities = arrayOf(Beer::class), version = 1)
 abstract class BeerDatabase : RoomDatabase() {
     abstract fun beerDao(): BeerDao
-//    abstract fun normalDao(): NormalDao
 
     companion object {
 

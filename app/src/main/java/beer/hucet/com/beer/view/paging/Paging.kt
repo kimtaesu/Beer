@@ -9,4 +9,22 @@ data class Paging(
         val type: ResolveType,
         val page: Int,
         val perPage: Int
-)
+) {
+    fun startPosition(): Long {
+        if (checkPageZero())
+            perPage
+        return ((page - 1) * perPage).toLong()
+    }
+
+    fun endPosition(): Long {
+        if (checkPageZero())
+            perPage
+        return (page * perPage).toLong()
+    }
+
+    fun checkPageZero(): Boolean {
+        if (page < 1)
+            return true
+        return false
+    }
+}

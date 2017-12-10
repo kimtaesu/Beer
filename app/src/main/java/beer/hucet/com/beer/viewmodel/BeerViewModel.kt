@@ -46,6 +46,7 @@ class BeerViewModel @Inject constructor(
             private val useCase: BeerUseCase,
             private val schedulerProvider: SchedulerProvider
     ) {
+
         private var curPage = AtomicInteger()
         private val loadMoreState = MutableLiveData<ResourcePage>()
         fun nextPage(type: ResolveType) {

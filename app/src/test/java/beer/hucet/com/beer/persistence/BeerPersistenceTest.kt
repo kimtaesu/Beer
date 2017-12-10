@@ -23,7 +23,7 @@ class BeerPersistenceTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var beersDatabase: BeerDatabase
-
+    val testBeers = BeerFixture.deserializeBeers("default_punk.json")
     @Before
     fun initDb() {
         beersDatabase = DBFixture.getDatabase()
@@ -36,7 +36,7 @@ class BeerPersistenceTest {
 
     @Test
     fun insertBeerSavesData() {
-        val testBeers = BeerFixture.deserializeBeers("default_punk.json")
+
         val beer = testBeers.first()
         beersDatabase.beerDao().insert(beer)
 
@@ -51,7 +51,6 @@ class BeerPersistenceTest {
 
     @Test
     fun insertAllBeersSavesData() {
-        val testBeers = BeerFixture.deserializeBeers("default_punk.json")
         beersDatabase.beerDao().insertAll(testBeers)
 
         beersDatabase.beerDao()
@@ -59,15 +58,5 @@ class BeerPersistenceTest {
                 .test()
                 .assertComplete()
                 .assertValue(testBeers)
-    }
-
-    @Test
-    fun aaa() {
-        val testBeers = BeerFixture.deserializeBeers("default_punk.json")
-        beersDatabase.beerDao().insertAll(testBeers)
-//        val normals = testBeers.map {
-//            Normal(ownerId = it.id)
-//        }
-//        beersDatabase.normalDao().insertAllNormal(normals)
     }
 }
