@@ -2,11 +2,11 @@ package beer.hucet.com.beer.viewmodel
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
-import beer.hucet.com.beer.ResolveType
 import beer.hucet.com.beer.TestApplication
 import beer.hucet.com.beer.fixture.BeerFixture
 import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.repository.BeerRepository
+import beer.hucet.com.beer.resolve.ResolveType
 import beer.hucet.com.beer.scheduler.TestSchedulerProvider
 import beer.hucet.com.beer.usecase.BeerUseCase
 import beer.hucet.com.beer.view.paging.LoadState

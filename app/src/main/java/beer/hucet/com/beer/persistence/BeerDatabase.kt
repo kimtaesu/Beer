@@ -27,4 +27,5 @@ abstract class BeerDatabase : RoomDatabase() {
                         BeerDatabase::class.java, "beers.db")
                         .build()
     }
+
 }

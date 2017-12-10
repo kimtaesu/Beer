@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import beer.hucet.com.beer.R
-import beer.hucet.com.beer.ResolveType
+import beer.hucet.com.beer.resolve.ResolveType
 import beer.hucet.com.beer.databinding.ActivityMainBinding
 import beer.hucet.com.beer.glide.GlideApp
 import beer.hucet.com.beer.model.Beer

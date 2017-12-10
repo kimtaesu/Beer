@@ -1,9 +1,8 @@
 package beer.hucet.com.beer.repository
 
-import beer.hucet.com.beer.ResolveType
-import beer.hucet.com.beer.datasource.NetworkDataSource
+import beer.hucet.com.beer.resolve.RequestResolver
+import beer.hucet.com.beer.resolve.ResolveType
 import beer.hucet.com.beer.view.paging.Paging
-import beer.hucet.com.beer.view.paging.UpTimeProvider
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import org.amshove.kluent.any
@@ -18,23 +17,18 @@ import org.jetbrains.spek.subject.SubjectSpek
  */
 class BeerRepositoryTest : SubjectSpek<BeerRepository>({
 
-    val networkDatasource by memoized {
-        mock<NetworkDataSource>()
-    }
-
-    val upTimeProvider by memoized {
-        mock<UpTimeProvider>()
+    val resolver by memoized {
+        mock<RequestResolver>()
     }
 
     given("BeerRepository")
     {
         subject {
-            BeerRepository(networkDatasource, mock(), mock(), upTimeProvider)
+            BeerRepository(resolver)
         }
 
         beforeEachTest {
-            whenever(networkDatasource.getPageBeers(any(), any())).thenReturn(Single.just(listOf()))
-            whenever(upTimeProvider.resolve(any())).thenReturn(10)
+            whenever(resolver.resolve(any())).thenReturn(Single.just(listOf()))
         }
         on("LoadState [Complete]")
         {
@@ -49,7 +43,7 @@ class BeerRepositoryTest : SubjectSpek<BeerRepository>({
         on("LoadState [Error]")
         {
 
-            whenever(networkDatasource.getPageBeers(1, 1))
+            whenever(resolver.resolve(any()))
                     .thenReturn(Single.just(1).map { throw RuntimeException() })
             val testSubscribe = subject.getPagingBeers(Paging(ResolveType.Normal(), 1, 1)).test()
             it("Assert noComplete, error") {

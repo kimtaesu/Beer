@@ -1,10 +1,8 @@
 package beer.hucet.com.beer.view.paging
 
-import beer.hucet.com.beer.ResolveType
+import beer.hucet.com.beer.resolve.ResolveType
 import beer.hucet.com.beer.TestApplication
-import beer.hucet.com.beer.preference.AppPreference
 import beer.hucet.com.beer.preference.PreferenceHelper
-import beer.hucet.com.beer.preference.get
 import beer.hucet.com.beer.preference.set
 import org.amshove.kluent.`should equal`
 import org.junit.After
@@ -37,9 +35,9 @@ class UpTimeProviderTest {
     @Test
     fun upTimeCreateKey() {
         val page = Paging(ResolveType.Normal(), 1, 1)
-        upTimeProviderTest.resolve(page)
+        upTimeProviderTest.provide(page)
 
-        val key = upTimeProviderTest.resolveKeyName(page)
+        val key = upTimeProviderTest.createkeyName(page)
 
         key `should equal` "${page.type.javaClass.simpleName}_${page.page}_${page.perPage}"
     }
@@ -47,10 +45,10 @@ class UpTimeProviderTest {
     @Test
     fun getUpTime() {
         val page = Paging(ResolveType.Normal(), 1, 1)
-        val key = upTimeProviderTest.resolveKeyName(page)
+        val key = upTimeProviderTest.createkeyName(page)
         PreferenceHelper.defaultPrefs(RuntimeEnvironment.application)[key] = 10L
 
-        val upTime = upTimeProviderTest.resolve(page)
+        val upTime = upTimeProviderTest.provide(page)
         10L `should equal` upTime
     }
 

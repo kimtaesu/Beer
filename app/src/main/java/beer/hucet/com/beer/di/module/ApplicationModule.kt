@@ -14,7 +14,8 @@ import javax.inject.Singleton
         NetworkModule::class,
         ViewModelModule::class,
         DataBaseModule::class,
-        UseCaseModule::class
+        UseCaseModule::class,
+        ResolveModule::class
 ))
 open class ApplicationModule {
     @Provides

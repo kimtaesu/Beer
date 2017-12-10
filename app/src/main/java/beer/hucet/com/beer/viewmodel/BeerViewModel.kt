@@ -2,7 +2,7 @@ package beer.hucet.com.beer.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import beer.hucet.com.beer.ResolveType
+import beer.hucet.com.beer.resolve.ResolveType
 import beer.hucet.com.beer.model.Beer
 import beer.hucet.com.beer.preference.AppPreference
 import beer.hucet.com.beer.scheduler.DefaultSchedulerProvider

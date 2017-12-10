@@ -1,4 +1,4 @@
-package beer.hucet.com.beer.cache
+package beer.hucet.com.beer.view.paging
 
 import beer.hucet.com.beer.preference.AppPreference
 import javax.inject.Inject

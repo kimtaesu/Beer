@@ -15,9 +15,15 @@ interface BeerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBeer(beer: Beer)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllBeers(beer: List<Beer>)
+
     @Query("DELETE FROM beers")
     fun deleteAllBeers()
 
     @Query("SELECT * FROM beers WHERE beer_id = :id")
     fun getBeerById(id: Long): Single<Beer>
+
+    @Query("SELECT * FROM beers")
+    fun getAllBeers(): Single<List<Beer>>
 }

@@ -12,11 +12,11 @@ import javax.inject.Singleton
 @Singleton
 class UpTimeProvider @Inject constructor(private val application: Application) {
 
-    fun resolve(page: Paging): Long {
-        return getUpTime(resolveKeyName(page))
+    fun provide(page: Paging): Long {
+        return getUpTime(createkeyName(page))
     }
 
-    fun resolveKeyName(page: Paging): String {
+    fun createkeyName(page: Paging): String {
         return "${page.type.javaClass.simpleName}_${page.page}_${page.perPage}"
     }
 

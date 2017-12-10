@@ -21,12 +21,7 @@ class PunkApiTest {
     @Before
     fun createService() {
         mockWebServer = MockWebServer()
-        service = Retrofit.Builder()
-                .baseUrl(mockWebServer.url("/"))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-                .create(PunkApi::class.java)
+        service = MockServerFixture.providePunkApi(mockWebServer)
     }
 
     @After
@@ -37,8 +32,9 @@ class PunkApiTest {
     @Test
     @Throws(IOException::class, InterruptedException::class)
     fun getBeers() {
-        val testData = BeerFixture.deserializeBeers("default_punk.json")
-        MockServerFixture.enqueueResponse(mockWebServer, "default_punk.json")
+        val jsonFileName = "default_punk.json"
+        val testData = BeerFixture.deserializeBeers(jsonFileName)
+        MockServerFixture.enqueueResponse(mockWebServer, jsonFileName)
         service
                 .getPageBeer(1, 1)
                 .test()

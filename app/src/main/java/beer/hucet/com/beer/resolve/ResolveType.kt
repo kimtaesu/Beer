@@ -1,4 +1,4 @@
-package beer.hucet.com.beer
+package beer.hucet.com.beer.resolve
 
 /**
  * Created by taesu on 2017-12-10.

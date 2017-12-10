@@ -1,12 +1,9 @@
-package beer.hucet.com.beer.cache
+package beer.hucet.com.beer.view.paging
 
 import beer.hucet.com.beer.TestApplication
 import beer.hucet.com.beer.preference.AppPreference
+import beer.hucet.com.beer.view.paging.RateLimiter
 import org.amshove.kluent.`should be`
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
-import org.jetbrains.spek.subject.SubjectSpek
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
