@@ -23,11 +23,11 @@ class RequestResolver(
                 if (rateLimit.shouldFetch(upTimeProvider.provide(page)))
                     networkDataSource.getPageBeers(page.page, page.perPage)
                             .map {
-                                db.beerDao().insertAllBeers(it)
+                                db.beerDao().insertAll(it)
                                 it
                             }
                 else
-                    networkDataSource.getPageBeers(page.page, page.perPage)
+                    db.beerDao().getAllBeers()
             }
         }
     }

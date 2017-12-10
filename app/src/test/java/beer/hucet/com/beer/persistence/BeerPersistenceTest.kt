@@ -1,15 +1,15 @@
 package beer.hucet.com.beer.persistence
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.persistence.room.Room
 import beer.hucet.com.beer.TestApplication
 import beer.hucet.com.beer.fixture.BeerFixture
+import beer.hucet.com.beer.fixture.DBFixture
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 /**
@@ -26,18 +26,19 @@ class BeerPersistenceTest {
 
     @Before
     fun initDb() {
-        beersDatabase = Room.inMemoryDatabaseBuilder(
-                RuntimeEnvironment.application,
-                BeerDatabase::class.java)
-                .allowMainThreadQueries()
-                .build()
+        beersDatabase = DBFixture.getDatabase()
+    }
+
+    @After
+    fun stopService() {
+        beersDatabase.beerDao().deleteAllBeers()
     }
 
     @Test
     fun insertBeerSavesData() {
         val testBeers = BeerFixture.deserializeBeers("default_punk.json")
         val beer = testBeers.first()
-        beersDatabase.beerDao().insertBeer(beer)
+        beersDatabase.beerDao().insert(beer)
 
         beersDatabase.beerDao()
                 .getBeerById(beer.id)
@@ -51,12 +52,22 @@ class BeerPersistenceTest {
     @Test
     fun insertAllBeersSavesData() {
         val testBeers = BeerFixture.deserializeBeers("default_punk.json")
-        beersDatabase.beerDao().insertAllBeers(testBeers)
+        beersDatabase.beerDao().insertAll(testBeers)
 
         beersDatabase.beerDao()
                 .getAllBeers()
                 .test()
                 .assertComplete()
                 .assertValue(testBeers)
+    }
+
+    @Test
+    fun aaa() {
+        val testBeers = BeerFixture.deserializeBeers("default_punk.json")
+        beersDatabase.beerDao().insertAll(testBeers)
+//        val normals = testBeers.map {
+//            Normal(ownerId = it.id)
+//        }
+//        beersDatabase.normalDao().insertAllNormal(normals)
     }
 }

@@ -11,12 +11,10 @@ import io.reactivex.Single
  * Created by taesu on 2017-12-05.
  */
 @Dao
-interface BeerDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBeer(beer: Beer)
+interface BeerDao : BaseDao<Beer> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllBeers(beer: List<Beer>)
+    fun insertAll(obj: List<Beer>)
 
     @Query("DELETE FROM beers")
     fun deleteAllBeers()
@@ -26,4 +24,5 @@ interface BeerDao {
 
     @Query("SELECT * FROM beers")
     fun getAllBeers(): Single<List<Beer>>
+
 }
