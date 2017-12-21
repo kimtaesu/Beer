@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: "config.gradle"
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 26
@@ -19,6 +20,9 @@ android {
         preDexLibraries = false
     }
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -138,3 +142,4 @@ repositories {
 //    from "build/tmp/kotlin-classes/debug"
 //    into "build/intermediates/classes/debug"
 //}
+
